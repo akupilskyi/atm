@@ -3,7 +3,7 @@ CREATE SCHEMA IF NOT EXISTS `atmdb` DEFAULT CHARACTER SET utf8 ;
 USE `atmdb` ;
 
 CREATE TABLE IF NOT EXISTS `atmdb`.`accounts` (
-  `id` BIGINT(15) NOT NULL,
+  `id` SERIAL,
   `balance` DECIMAL(15,2) NOT NULL DEFAULT '0.00',
   `currency` ENUM('EUR', 'USD', 'PLN') NOT NULL,
   `locked` TINYINT NULL DEFAULT 0,
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `atmdb`.`accounts` (
 ;
 
 CREATE TABLE IF NOT EXISTS `atmdb`.`cards` (
-  `id` BIGINT(15) NOT NULL,
+  `id` SERIAL,
   `number` VARCHAR(16) NOT NULL,
   `pin` CHAR(4) NOT NULL,
   `currency` ENUM('EUR', 'USD', 'PLN') NOT NULL,
@@ -27,14 +27,14 @@ CREATE TABLE IF NOT EXISTS `atmdb`.`cards` (
 ;
 
 CREATE TABLE IF NOT EXISTS `atmdb`.`atms` (
-  `id` INT NOT NULL,
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
   `location` VARCHAR(255) NOT NULL,
   `status` ENUM('active', 'out_of_service') NOT NULL DEFAULT 'active',
   PRIMARY KEY (`id`))
 ;
 
 CREATE TABLE IF NOT EXISTS `atmdb`.`atm_cash` (
-  `id` INT NOT NULL,
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
   `currency` ENUM('EUR', 'USD', 'PLN') NOT NULL,
   `denomination` INT NOT NULL,
   `quality` INT NOT NULL,
@@ -51,14 +51,14 @@ CREATE TABLE IF NOT EXISTS `atmdb`.`atm_cash` (
 ;
 
 CREATE TABLE IF NOT EXISTS `atmdb`.`currency_rate` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
   `code` ENUM('EUR', 'USD', 'PLN') NOT NULL,
   `rate` DECIMAL(10,2) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`))
 ;
 
 CREATE TABLE IF NOT EXISTS `atmdb`.`transactions` (
-  `id` BIGINT(15) NOT NULL,
+  `id` SERIAL,
   `account_id` BIGINT(15) NOT NULL,
   `card_id` BIGINT(15) NOT NULL,
   `transaction_type` ENUM('withdrawal', 'deposit', 'exchange') NOT NULL,
