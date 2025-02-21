@@ -1,7 +1,7 @@
 DROP SCHEMA IF EXISTS `atmdb` ;
-CREATE SCHEMA IF NOT EXISTS `atmdb` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `atmdb`;
 USE `atmdb` ;
-
+ 
 CREATE TABLE IF NOT EXISTS `atmdb`.`accounts` (
   `id` SERIAL,
   `balance` DECIMAL(15,2) NOT NULL DEFAULT '0.00',
@@ -9,13 +9,13 @@ CREATE TABLE IF NOT EXISTS `atmdb`.`accounts` (
   `locked` TINYINT NULL DEFAULT 0,
   PRIMARY KEY (`id`))
 ;
-
+ 
 CREATE TABLE IF NOT EXISTS `atmdb`.`cards` (
   `id` SERIAL,
   `number` VARCHAR(16) NOT NULL,
   `pin` CHAR(4) NOT NULL,
   `currency` ENUM('EUR', 'USD', 'PLN') NOT NULL,
-  `account_id` BIGINT(15) NOT NULL,
+  `account_id` BIGINT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `card_numer_UNIQUE` (`number` ASC) VISIBLE,
   INDEX `fk_cards_accounts_idx` (`account_id` ASC) VISIBLE,
@@ -25,20 +25,20 @@ CREATE TABLE IF NOT EXISTS `atmdb`.`cards` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ;
-
+ 
 CREATE TABLE IF NOT EXISTS `atmdb`.`atms` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
   `location` VARCHAR(255) NOT NULL,
   `status` ENUM('active', 'out_of_service') NOT NULL DEFAULT 'active',
   PRIMARY KEY (`id`))
 ;
-
+ 
 CREATE TABLE IF NOT EXISTS `atmdb`.`atm_cash` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
   `currency` ENUM('EUR', 'USD', 'PLN') NOT NULL,
   `denomination` INT NOT NULL,
   `quality` INT NOT NULL,
-  `atm_id` INT NOT NULL,
+  `atm_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `denomination` (`currency` ASC) VISIBLE,
   INDEX `quantity` (`denomination` ASC) VISIBLE,
@@ -49,23 +49,23 @@ CREATE TABLE IF NOT EXISTS `atmdb`.`atm_cash` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ;
-
+ 
 CREATE TABLE IF NOT EXISTS `atmdb`.`currency_rate` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
   `code` ENUM('EUR', 'USD', 'PLN') NOT NULL,
-  `rate` DECIMAL(10,2) UNSIGNED NOT NULL,
+  `rate` DECIMAL(10,2) NOT NULL,
   PRIMARY KEY (`id`))
 ;
-
+ 
 CREATE TABLE IF NOT EXISTS `atmdb`.`transactions` (
   `id` SERIAL,
-  `account_id` BIGINT(15) NOT NULL,
-  `card_id` BIGINT(15) NOT NULL,
+  `account_id` BIGINT UNSIGNED NOT NULL,
+  `card_id` BIGINT UNSIGNED NOT NULL,
   `transaction_type` ENUM('withdrawal', 'deposit', 'exchange') NOT NULL,
-  `amount` DECIMAL(15,2) UNSIGNED NULL,
+  `amount` DECIMAL(15,2) NULL,
   `timestamp` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  `atm_id` INT NOT NULL,
-  `currency_rate_id` INT NOT NULL,
+  `atm_id` INT UNSIGNED NOT NULL,
+  `currency_rate_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_transactions_accounts1_idx` (`account_id` ASC) VISIBLE,
   INDEX `fk_transactions_cards1_idx` (`card_id` ASC) VISIBLE,
