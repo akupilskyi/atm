@@ -4,10 +4,19 @@ import com.solvd.atm.domain.ATMElements.Currency;
 
 public class Card {
 
+    private Integer id;
     private String number;
     private String pin;
     private Currency currency;
     private Account account;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getNumber() {
         return number;

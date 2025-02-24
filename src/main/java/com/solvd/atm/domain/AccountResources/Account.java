@@ -9,7 +9,7 @@ public class Account {
     private Integer id;
     private BigDecimal balance;
     private Currency currency;
-    private boolean isClosed; // default value is false
+    private boolean locked; // default value is false
 
     public Integer getId() {
         return id;
@@ -35,11 +35,11 @@ public class Account {
         this.currency = currency;
     }
 
-    public boolean getIsClosed() {
-        return isClosed;
+    public boolean getLocked() {
+        return locked;
     }
 
-    public void setIsClosed(boolean closed) {
-        isClosed = closed;
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 }
