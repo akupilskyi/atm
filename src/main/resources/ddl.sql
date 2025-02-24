@@ -52,8 +52,9 @@ CREATE TABLE IF NOT EXISTS `atmdb`.`atm_cash` (
  
 CREATE TABLE IF NOT EXISTS `atmdb`.`currency_rate` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-  `code` ENUM('EUR', 'USD', 'PLN') NOT NULL,
-  `rate` DECIMAL(10,2) NOT NULL,
+  `from_currency` ENUM('EUR', 'USD', 'PLN') NOT NULL,
+  `to_currency` ENUM('EUR', 'USD', 'PLN') NOT NULL,
+  `rate` DECIMAL(10,4) NOT NULL,
   PRIMARY KEY (`id`))
 ;
  

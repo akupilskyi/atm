@@ -39,10 +39,13 @@ VALUES ('USD', 100, 50, 1),
        ('PLN', 200, 40, 3),
        ('PLN', 100, 70, 3);
 
-INSERT INTO `atmdb`.`currency_rate` (`code`, `rate`)
-VALUES ('EUR', 1.08), -- 1 EUR = 1.08 USD
-       ('USD', 1.00), -- 1 USD = 1.00 USD
-       ('PLN', 0.25); -- 1 PLN = 0.25 USD
+INSERT INTO `atmdb`.`currency_rate` (`from_currency`, `to_currency`, `rate`)
+VALUES ('EUR', 'USD', 1.08),
+       ('USD', 'EUR', 0.93),
+       ('EUR', 'PLN', 4.30),
+       ('PLN', 'EUR', 0.23),
+       ('USD', 'PLN', 4.00),
+       ('PLN', 'USD', 0.25);
 
 INSERT INTO `atmdb`.`transactions` (`account_id`, `card_id`, `transaction_type`, `amount`, `atm_id`,
                                     `currency_rate_id`)
