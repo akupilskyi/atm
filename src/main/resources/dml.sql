@@ -1,61 +1,83 @@
-INSERT INTO `atmdb`.`accounts` (`balance`, `currency`, `locked`)
-VALUES (1500.50, 'USD', 0),
-       (2300.75, 'EUR', 0),
-       (3200.00, 'PLN', 0),
-       (1100.25, 'USD', 0),
-       (5000.00, 'EUR', 0),
-       (750.50, 'PLN', 0),
-       (2100.00, 'USD', 0),
-       (4500.80, 'EUR', 0),
-       (2750.30, 'PLN', 0),
-       (1250.00, 'USD', 0);
+INSERT INTO `atmdb`.`accounts` (`balance`, `currency`, `locked`) VALUES
+(1000.00, 'EUR', FALSE),
+(1500.50, 'USD', FALSE),
+(2000.75, 'PLN', FALSE),
+(2500.00, 'EUR', FALSE),
+(3000.25, 'USD', FALSE),
+(3500.50, 'PLN', FALSE),
+(4000.75, 'EUR', FALSE),
+(4500.00, 'USD', FALSE),
+(5000.25, 'PLN', FALSE),
+(5500.50, 'EUR', FALSE);
 
-INSERT INTO `atmdb`.`cards` (`number`, `pin`, `currency`, `account_id`)
-VALUES ('1234567812345678', '1111', 'USD', 1),
-       ('2345678923456789', '2222', 'USD', 1),
-       ('3456789034567890', '3333', 'EUR', 2),
-       ('4567890145678901', '4444', 'EUR', 2),
-       ('5678901256789012', '5555', 'PLN', 3),
-       ('6789012367890123', '6666', 'USD', 4),
-       ('7890123478901234', '7777', 'EUR', 5),
-       ('8901234589012345', '8888', 'PLN', 6),
-       ('9012345690123456', '9999', 'USD', 7),
-       ('0123456701234567', '0000', 'EUR', 8),
-       ('1111222233334444', '1234', 'EUR', 8),
-       ('2222333344445555', '4321', 'PLN', 9),
-       ('3333444455556666', '5678', 'USD', 10),
-       ('4444555566667777', '8765', 'USD', 10);
+INSERT INTO `atmdb`.`cards` (`number`, `pin`, `currency`, `account_id`) VALUES
+('1234567812345678', '1234', 'EUR', 1),
+('2345678923456789', '2345', 'USD', 2),
+('3456789034567890', '3456', 'PLN', 3),
+('4567890145678901', '4567', 'EUR', 4),
+('5678901256789012', '5678', 'USD', 5),
+('6789012367890123', '6789', 'PLN', 6),
+('7890123478901234', '7890', 'EUR', 7),
+('8901234589012345', '8901', 'USD', 8),
+('9012345690123456', '9012', 'PLN', 9),
+('0123456701234567', '0123', 'EUR', 10),
+('1123456711234567', '1123', 'USD', 1),
+('2123456721234567', '2123', 'PLN', 2),
+('3123456731234567', '3123', 'EUR', 3),
+('4123456741234567', '4123', 'USD', 4),
+('5123456751234567', '5123', 'PLN', 5);
 
-INSERT INTO `atmdb`.`atms` (`location`, `status`)
-VALUES ('New York, Times Square', 'active'),
-       ('Berlin, Alexanderplatz', 'active'),
-       ('Warsaw, Old Town', 'active');
+INSERT INTO `atmdb`.`currency_rate` (`from_currency`, `to_currency`, `rate`) VALUES
+('EUR', 'USD', 1.12),
+('EUR', 'PLN', 4.50),
+('USD', 'EUR', 0.89),
+('USD', 'PLN', 4.02),
+('PLN', 'EUR', 0.22),
+('PLN', 'USD', 0.25);
 
-INSERT INTO `atmdb`.`atm_cash` (`currency`, `denomination`, `quality`, `atm_id`)
-VALUES ('USD', 100, 50, 1),
-       ('USD', 50, 100, 1),
-       ('EUR', 100, 30, 2),
-       ('EUR', 50, 60, 2),
-       ('PLN', 200, 40, 3),
-       ('PLN', 100, 70, 3);
+INSERT INTO `atmdb`.`atms` (`location`, `status`) VALUES
+('Berlin, Germany', 'active'),
+('New York, USA', 'active'),
+('Warsaw, Poland', 'active'),
+('Paris, France', 'active'),
+('London, UK', 'active');
 
-INSERT INTO `atmdb`.`currency_rate` (`from_currency`, `to_currency`, `rate`)
-VALUES ('EUR', 'USD', 1.08),
-       ('USD', 'EUR', 0.93),
-       ('EUR', 'PLN', 4.30),
-       ('PLN', 'EUR', 0.23),
-       ('USD', 'PLN', 4.00),
-       ('PLN', 'USD', 0.25);
+INSERT INTO `atmdb`.`transactions` (`card_id`, `transaction_type`, `amount`, `atm_id`, `currency_rate_id`) VALUES
+(1, 'deposit', 500.00, 1, 1),
+(2, 'exchange', 200.00, 2, 2),
+(3, 'deposit', 750.00, 3, 3),
+(4, 'exchange', 100.00, 4, 4),
+(5, 'deposit', 1200.00, 5, 5),
+(6, 'exchange', 300.00, 1, 6),
+(7, 'deposit', 450.00, 2, 1),
+(8, 'exchange', 600.00, 3, 2),
+(9, 'deposit', 900.00, 4, 3),
+(10, 'exchange', 150.00, 5, 4);
 
-INSERT INTO `atmdb`.`transactions` (`account_id`, `card_id`, `transaction_type`, `amount`, `atm_id`,
-                                    `currency_rate_id`)
-VALUES (1, 1, 'withdrawal', 200.00, 1, 2),
-       (2, 3, 'deposit', 150.00, 2, 1),
-       (3, 5, 'withdrawal', 300.00, 3, 3),
-       (4, 6, 'withdrawal', 50.00, 1, 2),
-       (5, 7, 'deposit', 500.00, 2, 1),
-       (6, 8, 'withdrawal', 100.00, 3, 3),
-       (7, 9, 'deposit', 1200.00, 1, 2),
-       (8, 10, 'withdrawal', 75.00, 2, 1),
-       (9, 12, 'exchange', 400.00, 3, 3),
-       (10, 13, 'deposit', 600.00, 1, 2);
+INSERT INTO `atmdb`.`banknote_types` (`currency_code`, `denomination`) VALUES
+('EUR', 5),
+('EUR', 10),
+('EUR', 20),
+('EUR', 50),
+('USD', 1),
+('USD', 5),
+('USD', 10),
+('USD', 20),
+('PLN', 10),
+('PLN', 20),
+('PLN', 50),
+('PLN', 100);
+
+INSERT INTO `atmdb`.`atms_has_banknote_types` (`atm_id`, `banknote_type_id`, `quality`) VALUES
+(1, 1, 100),
+(1, 2, 200),
+(2, 3, 150),
+(2, 4, 100),
+(3, 5, 300),
+(3, 6, 250),
+(4, 7, 200),
+(4, 8, 150),
+(5, 9, 350),
+(5, 10, 400),
+(1, 11, 500),
+(2, 12, 600);
