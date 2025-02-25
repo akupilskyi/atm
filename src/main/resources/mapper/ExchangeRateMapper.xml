@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.atm.persistence.ExchangeRateRepository">
+
+    <sql id="selectWhat">
+        cr.id AS currency_rate_id,
+        cr.from_currency AS currency_rate_from_currency,
+        cr.to_currency AS currency_rate_to_currency,
+        cr.rate AS currency_rate,
+        cfrom.iso_code AS from_currency_iso_code,
+        cfrom.name AS from_currency_name,
+        cto.iso_code AS to_currency_iso_code,
+        cto.name AS to_currency_name
+    </sql>
+
+    <sql id="fromWhere">
+        currency_rates cr
+        LEFT JOIN currencies cfrom ON cfrom.iso_code = cr.from_currency
+        LEFT JOIN currencies cto ON cto.iso_code = cr.to_currency
+    </sql>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
+
+    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO currency_rates (from_currency, to_currency, rate)
+        VALUES (#{fromCurrency.isoCode}, #{toCurrency.isoCode}, #{rate})
+    </insert>
+
+    <select id="getAll" resultMap="ExchangeRateResultMap">
+        SELECT
+        <include refid="selectWhat"/>
+        FROM
+        <include refid="fromWhere"/>
+    </select>
+
+    <select id="getById" resultMap="ExchangeRateResultMap">
+        SELECT
+        <include refid="selectWhat"/>
+        FROM
+        <include refid="fromWhere"/>
+        WHERE id = #{id}
+    </select>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
+
+    <resultMap id="ExchangeRateResultMap" type="com.solvd.atm.domain.ATMElements.ExchangeRate" autoMapping="false">
+        <id property="id" column="currency_rate_id"/>
+        <result property="rate" column="currency_rate"/>
+        <association property="fromCurrency"
+                     columnPrefix="from_"
+                     resultMap="com.solvd.atm.persistence.CurrencyRepository.CurrencyResultMap"/>
+        <association property="toCurrency"
+                     columnPrefix="to_"
+                     resultMap="com.solvd.atm.persistence.CurrencyRepository.CurrencyResultMap"/>
+    </resultMap>
+
+</mapper>

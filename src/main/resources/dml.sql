@@ -1,3 +1,10 @@
+USE atmdb;
+INSERT INTO currencies(iso_code, name) VALUES
+("EUR", "Euro"),
+("USD", "United States dollar"),
+("PLN", "Polish złoty")
+;
+
 INSERT INTO `atmdb`.`accounts` (`balance`, `currency`, `locked`) VALUES
 (1000.00, 'EUR', FALSE),
 (1500.50, 'USD', FALSE),
@@ -27,7 +34,7 @@ INSERT INTO `atmdb`.`cards` (`number`, `pin`, `currency`, `account_id`) VALUES
 ('4123456741234567', '4123', 'USD', 4),
 ('5123456751234567', '5123', 'PLN', 5);
 
-INSERT INTO `atmdb`.`currency_rate` (`from_currency`, `to_currency`, `rate`) VALUES
+INSERT INTO `atmdb`.`currency_rates` (`from_currency`, `to_currency`, `rate`) VALUES
 ('EUR', 'USD', 1.12),
 ('EUR', 'PLN', 4.50),
 ('USD', 'EUR', 0.89),
@@ -68,7 +75,7 @@ INSERT INTO `atmdb`.`banknote_types` (`currency_code`, `denomination`) VALUES
 ('PLN', 50),
 ('PLN', 100);
 
-INSERT INTO `atmdb`.`atms_has_banknote_types` (`atm_id`, `banknote_type_id`, `quality`) VALUES
+INSERT INTO `atmdb`.`atms_has_banknote_types` (`atm_id`, `banknote_type_id`, `quantity`) VALUES
 (1, 1, 100),
 (1, 2, 200),
 (2, 3, 150),

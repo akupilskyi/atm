@@ -15,5 +15,8 @@
         </environment>
     </environments>
     <mappers>
+        <mapper resource="mapper/CurrencyMapper.xml"/>
+        <mapper resource="mapper/BanknoteTypeMapper.xml"/>
+        <mapper resource="mapper/ExchangeRateMapper.xml"/>
     </mappers>
 </configuration>

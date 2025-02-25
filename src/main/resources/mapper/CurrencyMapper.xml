@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.atm.persistence.CurrencyRepository">
+
+    <sql id="selectWhat">
+        c.iso_code AS currency_iso_code,
+        c.name AS currency_name
+    </sql>
+
+    <sql id="fromWhere">
+        currencies c
+    </sql>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
+
+    <insert id="create" keyColumn="iso_code" keyProperty="isoCode" useGeneratedKeys="false">
+        INSERT INTO currencies(iso_code, name)
+        VALUES (#{isoCode}, #{name})
+    </insert>
+
+    <select id="getAll" resultMap="CurrencyResultMap">
+        SELECT
+        <include refid="selectWhat"/>
+        FROM
+        <include refid="fromWhere"/>
+    </select>
+
+    <select id="getById" resultMap="CurrencyResultMap">
+        SELECT
+        <include refid="selectWhat"/>
+        FROM
+        <include refid="fromWhere"/>
+        WHERE iso_code = #{isoCode}
+    </select>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
+
+    <resultMap id="CurrencyResultMap" type="com.solvd.atm.domain.ATMElements.Currency" autoMapping="false">
+        <id property="isoCode" column="currency_iso_code"/>
+        <result property="name" column="currency_name"/>
+    </resultMap>
+
+</mapper>
