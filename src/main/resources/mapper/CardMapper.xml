@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.atm.persistence.CardRepository">
+
+    <sql id="selectWhat">
+        card.id AS card_id,
+        card.number AS card_number,
+        card.pin AS card_pin,
+        card.currency AS card_currency,
+        card.account_id AS card_account_id,
+        c2.iso_code AS card_currency_iso_code,
+        c2.name AS card_currency_name,
+        <include refid="com.solvd.atm.persistence.AccountRepository.selectWhat"/>
+    </sql>
+
+    <sql id="fromWhere">
+        cards card
+        LEFT JOIN accounts a ON a.id = card.account_id
+        LEFT JOIN currencies c ON c.iso_code = a.currency
+        LEFT JOIN currencies c2 ON c2.iso_code = card.currency
+    </sql>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
+
+    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO cards (number, pin, currency, account_id)
+        VALUES (#{number}, #{pin}, #{currency.isoCode}, #{account.id})
+    </insert>
+
+    <select id="getAll" resultMap="CardResultMap">
+        SELECT
+        <include refid="selectWhat"/>
+        FROM
+        <include refid="fromWhere"/>
+    </select>
+
+    <select id="getById" resultMap="CardResultMap">
+        SELECT
+        <include refid="selectWhat"/>
+        FROM
+        <include refid="fromWhere"/>
+        WHERE card.id = #{id}
+    </select>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
+
+    <resultMap id="CardResultMap" type="com.solvd.atm.domain.AccountResources.Card" autoMapping="false">
+        <id property="id" column="card_id"/>
+        <result property="number" column="card_number"/>
+        <result property="pin" column="card_pin"/>
+        <association property="currency"
+                     columnPrefix="card_"
+                     resultMap="com.solvd.atm.persistence.CurrencyRepository.CurrencyResultMap"/>
+        <association property="account"
+                     resultMap="com.solvd.atm.persistence.AccountRepository.AccountResultMap"/>
+    </resultMap>
+
+</mapper>

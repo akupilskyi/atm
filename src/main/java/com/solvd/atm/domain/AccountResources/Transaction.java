@@ -1,7 +1,7 @@
 package com.solvd.atm.domain.AccountResources;
 
 import com.solvd.atm.domain.ATMElements.ATM;
-import com.solvd.atm.domain.ATMElements.Currency;
+import com.solvd.atm.domain.ATMElements.ExchangeRate;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -15,7 +15,7 @@ public class Transaction {
     private BigDecimal amount;
     private Timestamp timestamp;
     private ATM atm;
-    private Currency currency;
+    private ExchangeRate exchangeRate;
 
     public BigInteger getId() {
         return id;
@@ -65,11 +65,11 @@ public class Transaction {
         this.atm = atm;
     }
 
-    public Currency getCurrency() {
-        return currency;
+    public ExchangeRate getExchangeRate() {
+        return exchangeRate;
     }
 
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
+    public void setExchangeRate(ExchangeRate exchangeRate) {
+        this.exchangeRate = exchangeRate;
     }
 }

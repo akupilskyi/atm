@@ -51,15 +51,15 @@ INSERT INTO `atmdb`.`atms` (`location`, `status`) VALUES
 
 INSERT INTO `atmdb`.`transactions` (`card_id`, `transaction_type`, `amount`, `atm_id`, `currency_rate_id`) VALUES
 (1, 'deposit', 500.00, 1, 1),
-(2, 'exchange', 200.00, 2, 2),
+(2, 'withdrawal', 200.00, 2, 2),
 (3, 'deposit', 750.00, 3, 3),
-(4, 'exchange', 100.00, 4, 4),
+(4, 'withdrawal', 100.00, 4, 4),
 (5, 'deposit', 1200.00, 5, 5),
-(6, 'exchange', 300.00, 1, 6),
+(6, 'withdrawal', 300.00, 1, 6),
 (7, 'deposit', 450.00, 2, 1),
-(8, 'exchange', 600.00, 3, 2),
+(8, 'withdrawal', 600.00, 3, 2),
 (9, 'deposit', 900.00, 4, 3),
-(10, 'exchange', 150.00, 5, 4);
+(10, 'withdrawal', 150.00, 5, 4);
 
 INSERT INTO `atmdb`.`banknote_types` (`currency_code`, `denomination`) VALUES
 ('EUR', 5),

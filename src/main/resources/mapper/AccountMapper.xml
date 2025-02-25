@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.atm.persistence.AccountRepository">
+
+    <sql id="selectWhat">
+        a.id AS account_id,
+        a.balance AS account_balance,
+        a.currency AS account_currency,
+        a.locked AS account_locked,
+        <include refid="com.solvd.atm.persistence.CurrencyRepository.selectWhat"/>
+    </sql>
+
+    <sql id="fromWhere">
+        accounts a
+        LEFT JOIN currencies c ON c.iso_code = a.currency
+    </sql>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
+
+    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO accounts (balance, currency, locked)
+        VALUES (#{balance}, #{currency.isoCode}, #{locked})
+    </insert>
+
+    <select id="getAll" resultMap="AccountResultMap">
+        SELECT
+        <include refid="selectWhat"/>
+        FROM
+        <include refid="fromWhere"/>
+    </select>
+
+    <select id="getById" resultMap="AccountResultMap">
+        SELECT
+        <include refid="selectWhat"/>
+        FROM
+        <include refid="fromWhere"/>
+        WHERE id = #{id}
+    </select>
+
+    <update id="updateBalance">
+        UPDATE accounts
+        SET balance = #{newBalance}
+        WHERE id = #{accountId};
+    </update>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
+
+    <resultMap id="AccountResultMap" type="com.solvd.atm.domain.AccountResources.Account" autoMapping="false">
+        <id property="id" column="account_id"/>
+        <result property="balance" column="account_balance"/>
+        <result property="locked" column="account_locked"/>
+        <association property="currency"
+                     resultMap="com.solvd.atm.persistence.CurrencyRepository.CurrencyResultMap"/>
+    </resultMap>
+
+</mapper>

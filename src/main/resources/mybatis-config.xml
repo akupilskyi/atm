@@ -18,5 +18,9 @@
         <mapper resource="mapper/CurrencyMapper.xml"/>
         <mapper resource="mapper/BanknoteTypeMapper.xml"/>
         <mapper resource="mapper/ExchangeRateMapper.xml"/>
+        <mapper resource="mapper/AccountMapper.xml"/>
+        <mapper resource="mapper/ATMMapper.xml"/>
+        <mapper resource="mapper/CardMapper.xml"/>
+        <mapper resource="mapper/TransactionMapper.xml"/>
     </mappers>
 </configuration>
