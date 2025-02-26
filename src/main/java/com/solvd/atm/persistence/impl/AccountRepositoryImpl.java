@@ -41,4 +41,12 @@ public class AccountRepositoryImpl implements AccountRepository {
             repository.updateBalance(accountId, newBalance);
         }
     }
+
+    @Override
+    public void updateLocked(Long accountId, boolean booleanValue) {
+        try (SqlSession session = MybatisSessionHolder.getSqlSessionFactory().openSession(true)) {
+            AccountRepository repository = session.getMapper(AccountRepository.class);
+            repository.updateLocked(accountId, booleanValue);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.solvd.atm.persistence.impl;
 
 import com.solvd.atm.domain.ATMElements.ATM;
+import com.solvd.atm.domain.ATMElements.Status;
 import com.solvd.atm.persistence.ATMRepository;
 import com.solvd.atm.persistence.MybatisSessionHolder;
 import org.apache.ibatis.session.SqlSession;
@@ -30,6 +31,14 @@ public class ATMRepositoryImpl implements ATMRepository {
         try (SqlSession session = MybatisSessionHolder.getSqlSessionFactory().openSession(true)) {
             ATMRepository repository = session.getMapper(ATMRepository.class);
             repository.create(atm);
+        }
+    }
+
+    @Override
+    public void updateStatus(Long atmId, Status newStatus) {
+        try (SqlSession session = MybatisSessionHolder.getSqlSessionFactory().openSession(true)) {
+            ATMRepository repository = session.getMapper(ATMRepository.class);
+            repository.updateStatus(atmId, newStatus);
         }
     }
 }

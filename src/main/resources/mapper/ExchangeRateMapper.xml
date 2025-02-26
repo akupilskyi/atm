@@ -4,20 +4,28 @@
 <mapper namespace="com.solvd.atm.persistence.ExchangeRateRepository">
 
     <sql id="selectWhat">
-        cr.id AS currency_rate_id,
-        cr.from_currency AS currency_rate_from_currency,
-        cr.to_currency AS currency_rate_to_currency,
-        cr.rate AS currency_rate,
-        cfrom.iso_code AS from_currency_iso_code,
-        cfrom.name AS from_currency_name,
-        cto.iso_code AS to_currency_iso_code,
-        cto.name AS to_currency_name
+        <!-- id -->
+        currency_rates.id AS currency_rate_id,
+        <!-- fromCurrency -->
+        currency_rates.from_currency AS currency_rate_from_currency,
+            currency_rate_from.iso_code AS currency_rate_from_currency_iso_code,
+            currency_rate_from.name AS currency_rate_from_currency_name,
+        <!-- toCurrency -->
+        currency_rates.to_currency AS currency_rate_to_currency,
+            currency_rate_to.iso_code AS currency_rate_to_currency_iso_code,
+            currency_rate_to.name AS currency_rate_to_currency_name,
+        <!-- rate -->
+        currency_rates.rate AS currency_rate
     </sql>
 
     <sql id="fromWhere">
-        currency_rates cr
-        LEFT JOIN currencies cfrom ON cfrom.iso_code = cr.from_currency
-        LEFT JOIN currencies cto ON cto.iso_code = cr.to_currency
+        currency_rates
+        <include refid="joinNecessary"/>
+    </sql>
+
+    <sql id="joinNecessary">
+        LEFT JOIN currencies currency_rate_from ON currency_rate_from.iso_code = currency_rates.from_currency
+        LEFT JOIN currencies currency_rate_to ON currency_rate_to.iso_code = currency_rates.to_currency
     </sql>
 
     <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -39,7 +47,7 @@
         <include refid="selectWhat"/>
         FROM
         <include refid="fromWhere"/>
-        WHERE id = #{id}
+        WHERE currency_rates.id = #{id}
     </select>
 
     <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -48,10 +56,10 @@
         <id property="id" column="currency_rate_id"/>
         <result property="rate" column="currency_rate"/>
         <association property="fromCurrency"
-                     columnPrefix="from_"
+                     columnPrefix="currency_rate_from_"
                      resultMap="com.solvd.atm.persistence.CurrencyRepository.CurrencyResultMap"/>
         <association property="toCurrency"
-                     columnPrefix="to_"
+                     columnPrefix="currency_rate_to_"
                      resultMap="com.solvd.atm.persistence.CurrencyRepository.CurrencyResultMap"/>
     </resultMap>
 

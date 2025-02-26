@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `atmdb`.`atms` (
 CREATE TABLE IF NOT EXISTS `atmdb`.`transactions` (
   `id` SERIAL,
   `card_id` BIGINT UNSIGNED NOT NULL,
-  `transaction_type` ENUM('deposit', 'exchange') NOT NULL,
+  `transaction_type` ENUM('deposit', 'withdrawal') NOT NULL,
   `amount` DECIMAL(15,2) NULL,
   `timestamp` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   `atm_id` INT UNSIGNED NOT NULL,
@@ -90,19 +90,19 @@ CREATE TABLE IF NOT EXISTS `atmdb`.`banknote_types` (
   PRIMARY KEY (`id`))
 ;
 
-CREATE TABLE IF NOT EXISTS `atmdb`.`atms_has_banknote_types` (
+CREATE TABLE IF NOT EXISTS `atmdb`.`atms_have_banknote_types` (
   `atm_id` INT UNSIGNED NOT NULL,
   `banknote_type_id` INT UNSIGNED NOT NULL,
   `quantity` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`atm_id`, `banknote_type_id`),
-  INDEX `fk_atms_has_banknote_types_banknote_types1_idx` (`banknote_type_id` ASC) VISIBLE,
-  INDEX `fk_atms_has_banknote_types_atms1_idx` (`atm_id` ASC) VISIBLE,
-  CONSTRAINT `fk_atms_has_banknote_types_atms1`
+  INDEX `fk_atms_have_banknote_types_banknote_types1_idx` (`banknote_type_id` ASC) VISIBLE,
+  INDEX `fk_atms_have_banknote_types_atms1_idx` (`atm_id` ASC) VISIBLE,
+  CONSTRAINT `fk_atms_have_banknote_types_atms1`
     FOREIGN KEY (`atm_id`)
     REFERENCES `atmdb`.`atms` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_atms_has_banknote_types_banknote_types1`
+  CONSTRAINT `fk_atms_have_banknote_types_banknote_types1`
     FOREIGN KEY (`banknote_type_id`)
     REFERENCES `atmdb`.`banknote_types` (`id`)
     ON DELETE NO ACTION

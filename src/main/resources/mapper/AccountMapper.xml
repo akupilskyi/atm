@@ -4,16 +4,29 @@
 <mapper namespace="com.solvd.atm.persistence.AccountRepository">
 
     <sql id="selectWhat">
-        a.id AS account_id,
-        a.balance AS account_balance,
-        a.currency AS account_currency,
-        a.locked AS account_locked,
-        <include refid="com.solvd.atm.persistence.CurrencyRepository.selectWhat"/>
+        <!-- id -->
+        accounts.id AS account_id,
+        <!-- balance -->
+        accounts.balance AS account_balance,
+        <!-- currency -->
+        accounts.currency AS account_currency,
+            account_currency.iso_code AS account_currency_iso_code,
+            account_currency.name AS account_currency_name,
+        <!-- locked -->
+        accounts.locked AS account_locked,
+        <!-- cards -->
+        <include refid="com.solvd.atm.persistence.CardRepository.selectWhat"/>
     </sql>
 
     <sql id="fromWhere">
-        accounts a
-        LEFT JOIN currencies c ON c.iso_code = a.currency
+        accounts
+        <include refid="joinNecessary"/>
+    </sql>
+
+    <sql id="joinNecessary">
+        LEFT JOIN currencies account_currency ON account_currency.iso_code = accounts.currency
+        LEFT JOIN cards ON cards.account_id = accounts.id
+        <include refid="com.solvd.atm.persistence.CardRepository.joinNecessary"/>
     </sql>
 
     <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -35,13 +48,19 @@
         <include refid="selectWhat"/>
         FROM
         <include refid="fromWhere"/>
-        WHERE id = #{id}
+        WHERE accounts.id = #{id}
     </select>
 
     <update id="updateBalance">
         UPDATE accounts
         SET balance = #{newBalance}
-        WHERE id = #{accountId};
+        WHERE accounts.id = #{accountId};
+    </update>
+
+    <update id="updateLocked">
+        UPDATE accounts
+        SET locked = #{booleanValue}
+        WHERE accounts.id = #{accountId};
     </update>
 
     <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -51,7 +70,11 @@
         <result property="balance" column="account_balance"/>
         <result property="locked" column="account_locked"/>
         <association property="currency"
+                     columnPrefix="account_"
                      resultMap="com.solvd.atm.persistence.CurrencyRepository.CurrencyResultMap"/>
+        <collection property="cards"
+                    ofType="com.solvd.atm.domain.AccountResources.Card"
+                    resultMap="com.solvd.atm.persistence.CardRepository.CardResultMap"/>
     </resultMap>
 
 </mapper>

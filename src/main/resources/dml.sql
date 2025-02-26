@@ -58,8 +58,8 @@ INSERT INTO `atmdb`.`transactions` (`card_id`, `transaction_type`, `amount`, `at
 (6, 'withdrawal', 300.00, 1, 6),
 (7, 'deposit', 450.00, 2, 1),
 (8, 'withdrawal', 600.00, 3, 2),
-(9, 'deposit', 900.00, 4, 3),
-(10, 'withdrawal', 150.00, 5, 4);
+(1, 'deposit', 900.00, 4, 3),
+(1, 'withdrawal', 150.00, 5, 4);
 
 INSERT INTO `atmdb`.`banknote_types` (`currency_code`, `denomination`) VALUES
 ('EUR', 5),
@@ -75,7 +75,7 @@ INSERT INTO `atmdb`.`banknote_types` (`currency_code`, `denomination`) VALUES
 ('PLN', 50),
 ('PLN', 100);
 
-INSERT INTO `atmdb`.`atms_has_banknote_types` (`atm_id`, `banknote_type_id`, `quantity`) VALUES
+INSERT INTO `atmdb`.`atms_have_banknote_types` (`atm_id`, `banknote_type_id`, `quantity`) VALUES
 (1, 1, 100),
 (1, 2, 200),
 (2, 3, 150),

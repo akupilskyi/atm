@@ -1,5 +1,7 @@
 package com.solvd.atm.persistence.impl;
 
+import com.solvd.atm.domain.ATMElements.ATM;
+import com.solvd.atm.domain.AccountResources.Card;
 import com.solvd.atm.domain.AccountResources.Transaction;
 import com.solvd.atm.persistence.MybatisSessionHolder;
 import com.solvd.atm.persistence.TransactionRepository;
@@ -26,10 +28,10 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
-    public void create(Transaction transaction) {
+    public void create(Transaction transaction, Card card, ATM atm) {
         try (SqlSession session = MybatisSessionHolder.getSqlSessionFactory().openSession(true)) {
             TransactionRepository repository = session.getMapper(TransactionRepository.class);
-            repository.create(transaction);
+            repository.create(transaction, card, atm);
         }
     }
 }

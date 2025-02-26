@@ -10,7 +10,6 @@ public class Card {
     private String number;
     private String pin;
     private Currency currency;
-    private Account account;
     private List<Transaction> transactions;
 
     public Long getId() {
@@ -43,14 +42,6 @@ public class Card {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
     }
 
     public List<Transaction> getTransactions() {

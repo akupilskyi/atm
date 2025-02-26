@@ -4,16 +4,23 @@
 <mapper namespace="com.solvd.atm.persistence.BanknoteTypeRepository">
 
     <sql id="selectWhat">
-        b.id AS banknote_type_id,
-        b.currency_code AS banknote_type_currency_code,
-        b.denomination AS banknote_type_denomination,
-        c.iso_code AS currency_iso_code,
-        c.name AS currency_name
+        <!-- id -->
+        banknote_types.id AS banknote_type_id,
+        <!-- currency -->
+        banknote_types.currency_code AS banknote_type_currency_code,
+            banknote_currencies.iso_code AS banknote_currency_iso_code,
+            banknote_currencies.name AS banknote_currency_name,
+        <!-- denomination -->
+        banknote_types.denomination AS banknote_type_denomination
     </sql>
 
     <sql id="fromWhere">
-        banknote_types b
-        LEFT JOIN currencies c ON c.iso_code = b.currency_code
+        banknote_types
+        <include refid="joinNecessary"/>
+    </sql>
+
+    <sql id="joinNecessary">
+        LEFT JOIN currencies banknote_currencies ON banknote_currencies.iso_code = banknote_types.currency_code
     </sql>
 
     <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -35,7 +42,7 @@
         <include refid="selectWhat"/>
         FROM
         <include refid="fromWhere"/>
-        WHERE id = #{id}
+        WHERE banknote_types.id = #{id}
     </select>
 
     <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -44,6 +51,7 @@
         <id property="id" column="banknote_type_id"/>
         <result property="denomination" column="banknote_type_denomination"/>
         <association property="currency"
+                     columnPrefix="banknote_"
                      resultMap="com.solvd.atm.persistence.CurrencyRepository.CurrencyResultMap"/>
     </resultMap>
 

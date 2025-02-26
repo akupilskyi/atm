@@ -15,4 +15,6 @@ public interface AccountRepository {
     void create(Account account);
 
     void updateBalance(@Param("accountId") Long accountId, @Param("newBalance") BigDecimal newBalance);
+
+    void updateLocked(@Param("accountId") Long accountId, @Param("booleanValue") boolean booleanValue);
 }

@@ -4,12 +4,14 @@
 <mapper namespace="com.solvd.atm.persistence.CurrencyRepository">
 
     <sql id="selectWhat">
-        c.iso_code AS currency_iso_code,
-        c.name AS currency_name
+        <!-- isoCode -->
+        currencies.iso_code AS currency_iso_code,
+        <!-- name -->
+        currencies.name AS currency_name
     </sql>
 
     <sql id="fromWhere">
-        currencies c
+        currencies
     </sql>
 
     <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -31,7 +33,7 @@
         <include refid="selectWhat"/>
         FROM
         <include refid="fromWhere"/>
-        WHERE iso_code = #{isoCode}
+        WHERE currencies.iso_code = #{isoCode}
     </select>
 
     <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->

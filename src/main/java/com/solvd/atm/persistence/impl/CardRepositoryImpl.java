@@ -1,5 +1,6 @@
 package com.solvd.atm.persistence.impl;
 
+import com.solvd.atm.domain.AccountResources.Account;
 import com.solvd.atm.domain.AccountResources.Card;
 import com.solvd.atm.persistence.CardRepository;
 import com.solvd.atm.persistence.MybatisSessionHolder;
@@ -26,10 +27,18 @@ public class CardRepositoryImpl implements CardRepository {
     }
 
     @Override
-    public void create(Card card) {
+    public void create(Card card, Account account) {
         try (SqlSession session = MybatisSessionHolder.getSqlSessionFactory().openSession(true)) {
             CardRepository repository = session.getMapper(CardRepository.class);
-            repository.create(card);
+            repository.create(card, account);
+        }
+    }
+
+    @Override
+    public void updatePin(Long cardId, Integer newPin) {
+        try (SqlSession session = MybatisSessionHolder.getSqlSessionFactory().openSession(true)) {
+            CardRepository repository = session.getMapper(CardRepository.class);
+            repository.updatePin(cardId, newPin);
         }
     }
 }

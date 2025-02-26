@@ -4,28 +4,36 @@
 <mapper namespace="com.solvd.atm.persistence.CardRepository">
 
     <sql id="selectWhat">
-        card.id AS card_id,
-        card.number AS card_number,
-        card.pin AS card_pin,
-        card.currency AS card_currency,
-        card.account_id AS card_account_id,
-        c2.iso_code AS card_currency_iso_code,
-        c2.name AS card_currency_name,
-        <include refid="com.solvd.atm.persistence.AccountRepository.selectWhat"/>
+        <!-- id -->
+        cards.id AS card_id,
+        <!-- number -->
+        cards.number AS card_number,
+        <!-- pin -->
+        cards.pin AS card_pin,
+        <!-- currency -->
+        cards.currency AS card_currency,
+            card_currency.iso_code AS card_currency_iso_code,
+            card_currency.name AS card_currency_name,
+        <!-- transactions -->
+        <include refid="com.solvd.atm.persistence.TransactionRepository.selectWhat"/>
     </sql>
 
     <sql id="fromWhere">
-        cards card
-        LEFT JOIN accounts a ON a.id = card.account_id
-        LEFT JOIN currencies c ON c.iso_code = a.currency
-        LEFT JOIN currencies c2 ON c2.iso_code = card.currency
+        cards
+        <include refid="joinNecessary"/>
+    </sql>
+
+    <sql id="joinNecessary">
+        LEFT JOIN currencies card_currency ON card_currency.iso_code = cards.currency
+        LEFT JOIN transactions ON transactions.card_id = cards.id
+        <include refid="com.solvd.atm.persistence.TransactionRepository.joinNecessary"/>
     </sql>
 
     <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
 
-    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+    <insert id="create" keyColumn="cards.id" keyProperty="card.id" useGeneratedKeys="true">
         INSERT INTO cards (number, pin, currency, account_id)
-        VALUES (#{number}, #{pin}, #{currency.isoCode}, #{account.id})
+        VALUES (#{card.number}, #{card.pin}, #{card.currency.isoCode}, #{account.id})
     </insert>
 
     <select id="getAll" resultMap="CardResultMap">
@@ -40,8 +48,14 @@
         <include refid="selectWhat"/>
         FROM
         <include refid="fromWhere"/>
-        WHERE card.id = #{id}
+        WHERE cards.id = #{id}
     </select>
+
+    <update id="updatePin">
+        UPDATE cards
+        SET pin = #{newPin}
+        WHERE id = #{cardId}
+    </update>
 
     <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
 
@@ -52,8 +66,9 @@
         <association property="currency"
                      columnPrefix="card_"
                      resultMap="com.solvd.atm.persistence.CurrencyRepository.CurrencyResultMap"/>
-        <association property="account"
-                     resultMap="com.solvd.atm.persistence.AccountRepository.AccountResultMap"/>
+        <collection property="transactions"
+                    ofType="com.solvd.atm.domain.AccountResources.Transaction"
+                    resultMap="com.solvd.atm.persistence.TransactionRepository.TransactionResultMap"/>
     </resultMap>
 
 </mapper>

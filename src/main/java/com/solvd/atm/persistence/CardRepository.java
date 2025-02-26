@@ -12,5 +12,7 @@ public interface CardRepository {
 
     Card getById(@Param("id") Long id);
 
-    void create(Card card);
+    void create(@Param("card") Card card, @Param("account") Account account);
+
+    void updatePin(@Param("cardId") Long cardId, @Param("newPin") Integer newPin);
 }
