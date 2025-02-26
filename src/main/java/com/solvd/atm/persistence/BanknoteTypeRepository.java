@@ -9,7 +9,7 @@ public interface BanknoteTypeRepository {
 
     List<BanknoteType> getAll();
 
-    BanknoteType getById(@Param("id") Integer id);
+    BanknoteType getById(@Param("id") Long id);
 
     void create(BanknoteType banknoteType);
 }

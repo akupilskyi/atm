@@ -18,7 +18,7 @@ public class BanknoteTypeRepositoryImpl implements BanknoteTypeRepository {
     }
 
     @Override
-    public BanknoteType getById(Integer id) {
+    public BanknoteType getById(Long id) {
         try (SqlSession session = MybatisSessionHolder.getSqlSessionFactory().openSession(true)) {
             BanknoteTypeRepository repository = session.getMapper(BanknoteTypeRepository.class);
             return repository.getById(id);

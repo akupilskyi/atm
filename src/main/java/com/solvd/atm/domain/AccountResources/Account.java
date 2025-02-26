@@ -3,19 +3,21 @@ package com.solvd.atm.domain.AccountResources;
 import com.solvd.atm.domain.ATMElements.Currency;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class Account {
 
-    private Integer id;
+    private Long id;
     private BigDecimal balance;
     private Currency currency;
     private boolean locked; // default value is false
+    private List<Card> cards;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -41,5 +43,13 @@ public class Account {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
     }
 }

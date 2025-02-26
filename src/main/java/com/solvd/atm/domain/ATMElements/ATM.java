@@ -1,19 +1,23 @@
 package com.solvd.atm.domain.ATMElements;
 
+import com.solvd.atm.domain.AccountResources.Transaction;
+
+import java.util.List;
 import java.util.Map;
 
 public class ATM {
 
-    private Integer id;
+    private Long id;
     private String location;
     private Status status;
-    private Map<BanknoteType, Integer> banknotes;
+    private Map<BanknoteType, Long> banknotes;
+    List<Transaction> transactions;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -33,11 +37,19 @@ public class ATM {
         this.status = status;
     }
 
-    public Map<BanknoteType, Integer> getBanknotes() {
+    public Map<BanknoteType, Long> getBanknotes() {
         return banknotes;
     }
 
-    public void setBanknotes(Map<BanknoteType, Integer> banknotes) {
+    public void setBanknotes(Map<BanknoteType, Long> banknotes) {
         this.banknotes = banknotes;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

@@ -18,7 +18,7 @@ public class ExchangeRateRepositoryImpl implements ExchangeRateRepository {
     }
 
     @Override
-    public ExchangeRate getById(Integer id) {
+    public ExchangeRate getById(Long id) {
         try (SqlSession session = MybatisSessionHolder.getSqlSessionFactory().openSession(true)) {
             ExchangeRateRepository repository = session.getMapper(ExchangeRateRepository.class);
             return repository.getById(id);

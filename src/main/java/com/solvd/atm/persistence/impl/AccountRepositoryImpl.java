@@ -19,7 +19,7 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public Account getById(Integer id) {
+    public Account getById(Long id) {
         try (SqlSession session = MybatisSessionHolder.getSqlSessionFactory().openSession(true)) {
             AccountRepository repository = session.getMapper(AccountRepository.class);
             return repository.getById(id);
@@ -35,7 +35,7 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public void updateBalance(Integer accountId, BigDecimal newBalance) {
+    public void updateBalance(Long accountId, BigDecimal newBalance) {
         try (SqlSession session = MybatisSessionHolder.getSqlSessionFactory().openSession(true)) {
             AccountRepository repository = session.getMapper(AccountRepository.class);
             repository.updateBalance(accountId, newBalance);

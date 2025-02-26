@@ -18,7 +18,7 @@ public class ATMRepositoryImpl implements ATMRepository {
     }
 
     @Override
-    public ATM getById(Integer id) {
+    public ATM getById(Long id) {
         try (SqlSession session = MybatisSessionHolder.getSqlSessionFactory().openSession(true)) {
             ATMRepository repository = session.getMapper(ATMRepository.class);
             return repository.getById(id);

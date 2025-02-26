@@ -2,19 +2,22 @@ package com.solvd.atm.domain.AccountResources;
 
 import com.solvd.atm.domain.ATMElements.Currency;
 
+import java.util.List;
+
 public class Card {
 
-    private Integer id;
+    private Long id;
     private String number;
     private String pin;
     private Currency currency;
     private Account account;
+    private List<Transaction> transactions;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -48,5 +51,13 @@ public class Card {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

@@ -10,7 +10,7 @@ public interface CardRepository {
 
     List<Card> getAll();
 
-    Card getById(@Param("id") Integer id);
+    Card getById(@Param("id") Long id);
 
     void create(Card card);
 }

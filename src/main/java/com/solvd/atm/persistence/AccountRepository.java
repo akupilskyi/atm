@@ -10,9 +10,9 @@ public interface AccountRepository {
 
     List<Account> getAll();
 
-    Account getById(@Param("id") Integer id);
+    Account getById(@Param("id") Long id);
 
     void create(Account account);
 
-    void updateBalance(@Param("accountId") Integer accountId, @Param("newBalance") BigDecimal newBalance);
+    void updateBalance(@Param("accountId") Long accountId, @Param("newBalance") BigDecimal newBalance);
 }

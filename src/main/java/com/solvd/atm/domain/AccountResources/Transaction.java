@@ -1,36 +1,24 @@
 package com.solvd.atm.domain.AccountResources;
 
-import com.solvd.atm.domain.ATMElements.ATM;
 import com.solvd.atm.domain.ATMElements.ExchangeRate;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 
 public class Transaction {
 
-    private BigInteger id;
-    private Card card;
+    private Long id;
     private TransactionType transactionType;
     private BigDecimal amount;
     private Timestamp timestamp;
-    private ATM atm;
     private ExchangeRate exchangeRate;
 
-    public BigInteger getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public Card getCard() {
-        return card;
-    }
-
-    public void setCard(Card card) {
-        this.card = card;
     }
 
     public TransactionType getTransactionType() {
@@ -55,14 +43,6 @@ public class Transaction {
 
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public ATM getATM() {
-        return atm;
-    }
-
-    public void setATM(ATM atm) {
-        this.atm = atm;
     }
 
     public ExchangeRate getExchangeRate() {

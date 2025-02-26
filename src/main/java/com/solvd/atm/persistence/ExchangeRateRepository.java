@@ -9,7 +9,7 @@ public interface ExchangeRateRepository {
 
     List<ExchangeRate> getAll();
 
-    ExchangeRate getById(@Param("id") Integer id);
+    ExchangeRate getById(@Param("id") Long id);
 
     void create(ExchangeRate exchangeRate);
 }

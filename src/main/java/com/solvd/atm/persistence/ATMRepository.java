@@ -9,7 +9,7 @@ public interface ATMRepository {
 
     List<ATM> getAll();
 
-    ATM getById(@Param("id") Integer id);
+    ATM getById(@Param("id") Long id);
 
     void create(ATM atm);
 }
