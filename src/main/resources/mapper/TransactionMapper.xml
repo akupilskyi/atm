@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.atm.persistence.TransactionRepository">
+
+    <sql id="selectWhat">
+        <!-- id -->
+        transactions.id AS transaction_id,
+        <!-- transactionType -->
+        transactions.transaction_type AS transaction_type,
+        <!-- amount -->
+        transactions.amount AS transaction_amount,
+        <!-- timestamp -->
+        transactions.timestamp AS transaction_timestamp,
+        <!-- exchangeRate -->
+        transactions.currency_rate_id AS transaction_currency_rate_id,
+            <include refid="com.solvd.atm.persistence.ExchangeRateRepository.selectWhat"/>
+    </sql>
+
+    <sql id="fromWhere">
+        transactions
+        <include refid="joinNecessary"/>
+    </sql>
+
+    <sql id="joinNecessary">
+        LEFT JOIN currency_rates ON currency_rates.id = transactions.currency_rate_id
+        <include refid="com.solvd.atm.persistence.ExchangeRateRepository.joinNecessary"/>
+    </sql>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
+
+    <insert id="create" keyColumn="transactions.id" keyProperty="transaction.id" useGeneratedKeys="true">
+        INSERT INTO transactions (card_id, transaction_type, amount, timestamp, atm_id, currency_rate_id)
+        VALUES (#{card.id}, #{transaction.transactionType}, #{transaction.amount}, #{transaction.timestamp}, #{atm.id}, #{transaction.exchangeRate.id})
+    </insert>
+
+    <select id="getAll" resultMap="TransactionResultMap">
+        SELECT
+        <include refid="selectWhat"/>
+        FROM
+        <include refid="fromWhere"/>
+    </select>
+
+    <select id="getById" resultMap="TransactionResultMap">
+        SELECT
+        <include refid="selectWhat"/>
+        FROM
+        <include refid="fromWhere"/>
+        WHERE transactions.id = #{id}
+    </select>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
+
+    <resultMap id="TransactionResultMap" type="com.solvd.atm.domain.AccountResources.Transaction" autoMapping="false">
+        <id property="id" column="transaction_id"/>
+        <result property="transactionType" column="transaction_type"/>
+        <result property="amount" column="transaction_amount"/>
+        <result property="timestamp" column="transaction_timestamp"/>
+        <association property="exchangeRate"
+                     resultMap="com.solvd.atm.persistence.ExchangeRateRepository.ExchangeRateResultMap"/>
+    </resultMap>
+
+</mapper>

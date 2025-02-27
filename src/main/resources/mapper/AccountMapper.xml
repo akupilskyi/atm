@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.atm.persistence.AccountRepository">
+
+    <sql id="selectWhat">
+        <!-- id -->
+        accounts.id AS account_id,
+        <!-- balance -->
+        accounts.balance AS account_balance,
+        <!-- currency -->
+        accounts.currency AS account_currency,
+            account_currency.iso_code AS account_currency_iso_code,
+            account_currency.name AS account_currency_name,
+        <!-- locked -->
+        accounts.locked AS account_locked,
+        <!-- cards -->
+        <include refid="com.solvd.atm.persistence.CardRepository.selectWhat"/>
+    </sql>
+
+    <sql id="fromWhere">
+        accounts
+        <include refid="joinNecessary"/>
+    </sql>
+
+    <sql id="joinNecessary">
+        LEFT JOIN currencies account_currency ON account_currency.iso_code = accounts.currency
+        LEFT JOIN cards ON cards.account_id = accounts.id
+        <include refid="com.solvd.atm.persistence.CardRepository.joinNecessary"/>
+    </sql>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
+
+    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO accounts (balance, currency, locked)
+        VALUES (#{balance}, #{currency.isoCode}, #{locked})
+    </insert>
+
+    <select id="getAll" resultMap="AccountResultMap">
+        SELECT
+        <include refid="selectWhat"/>
+        FROM
+        <include refid="fromWhere"/>
+    </select>
+
+    <select id="getById" resultMap="AccountResultMap">
+        SELECT
+        <include refid="selectWhat"/>
+        FROM
+        <include refid="fromWhere"/>
+        WHERE accounts.id = #{id}
+    </select>
+
+    <update id="updateBalance">
+        UPDATE accounts
+        SET balance = #{newBalance}
+        WHERE accounts.id = #{accountId};
+    </update>
+
+    <update id="updateLocked">
+        UPDATE accounts
+        SET locked = #{booleanValue}
+        WHERE accounts.id = #{accountId};
+    </update>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
+
+    <resultMap id="AccountResultMap" type="com.solvd.atm.domain.AccountResources.Account" autoMapping="false">
+        <id property="id" column="account_id"/>
+        <result property="balance" column="account_balance"/>
+        <result property="locked" column="account_locked"/>
+        <association property="currency"
+                     columnPrefix="account_"
+                     resultMap="com.solvd.atm.persistence.CurrencyRepository.CurrencyResultMap"/>
+        <collection property="cards"
+                    ofType="com.solvd.atm.domain.AccountResources.Card"
+                    resultMap="com.solvd.atm.persistence.CardRepository.CardResultMap"/>
+    </resultMap>
+
+</mapper>

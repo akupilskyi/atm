@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.atm.persistence.BanknoteTypeRepository">
+
+    <sql id="selectWhat">
+        <!-- id -->
+        banknote_types.id AS banknote_type_id,
+        <!-- currency -->
+        banknote_types.currency_code AS banknote_type_currency_code,
+            banknote_currencies.iso_code AS banknote_currency_iso_code,
+            banknote_currencies.name AS banknote_currency_name,
+        <!-- denomination -->
+        banknote_types.denomination AS banknote_type_denomination
+    </sql>
+
+    <sql id="fromWhere">
+        banknote_types
+        <include refid="joinNecessary"/>
+    </sql>
+
+    <sql id="joinNecessary">
+        LEFT JOIN currencies banknote_currencies ON banknote_currencies.iso_code = banknote_types.currency_code
+    </sql>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
+
+    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO banknote_types (currency_code, denomination)
+        VALUES (#{currency.isoCode}, #{denomination})
+    </insert>
+
+    <select id="getAll" resultMap="BanknoteTypeResultMap">
+        SELECT
+        <include refid="selectWhat"/>
+        FROM
+        <include refid="fromWhere"/>
+    </select>
+
+    <select id="getById" resultMap="BanknoteTypeResultMap">
+        SELECT
+        <include refid="selectWhat"/>
+        FROM
+        <include refid="fromWhere"/>
+        WHERE banknote_types.id = #{id}
+    </select>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
+
+    <resultMap id="BanknoteTypeResultMap" type="com.solvd.atm.domain.ATMElements.BanknoteType" autoMapping="false">
+        <id property="id" column="banknote_type_id"/>
+        <result property="denomination" column="banknote_type_denomination"/>
+        <association property="currency"
+                     columnPrefix="banknote_"
+                     resultMap="com.solvd.atm.persistence.CurrencyRepository.CurrencyResultMap"/>
+    </resultMap>
+
+</mapper>

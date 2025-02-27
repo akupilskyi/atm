@@ -2,13 +2,22 @@ package com.solvd.atm.domain.ATMElements;
 
 public class Currency {
 
-    private String code; // https://en.wikipedia.org/wiki/ISO_4217#List_of_ISO_4217_currency_codes
+    private String isoCode; // https://en.wikipedia.org/wiki/ISO_4217#List_of_ISO_4217_currency_codes
+    private String name;
 
-    public String getCode() {
-        return code;
+    public String getIsoCode() {
+        return isoCode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setIsoCode(String isoCode) {
+        this.isoCode = isoCode;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

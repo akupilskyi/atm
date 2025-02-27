@@ -2,15 +2,15 @@ package com.solvd.atm.domain.ATMElements;
 
 public class BanknoteType {
 
-    private String id;
+    private Long id;
     private Currency currency;
-    private Integer denomination;
+    private Long denomination;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -22,11 +22,11 @@ public class BanknoteType {
         this.currency = currency;
     }
 
-    public Integer getDenomination() {
+    public Long getDenomination() {
         return denomination;
     }
 
-    public void setDenomination(Integer denomination) {
+    public void setDenomination(Long denomination) {
         this.denomination = denomination;
     }
 }

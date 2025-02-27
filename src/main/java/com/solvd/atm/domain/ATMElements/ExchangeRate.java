@@ -4,16 +4,16 @@ import java.math.BigDecimal;
 
 public class ExchangeRate {
 
-    private Integer id;
+    private Long id;
     private Currency fromCurrency;
     private Currency toCurrency;
     private BigDecimal rate;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
