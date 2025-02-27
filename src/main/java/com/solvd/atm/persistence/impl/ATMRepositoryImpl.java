@@ -41,4 +41,20 @@ public class ATMRepositoryImpl implements ATMRepository {
             repository.updateStatus(atmId, newStatus);
         }
     }
+
+    @Override
+    public void insertBanknotes(Long atmId, Long banknoteTypeId, Integer quantity) {
+        try (SqlSession session = MybatisSessionHolder.getSqlSessionFactory().openSession(true)) {
+            ATMRepository repository = session.getMapper(ATMRepository.class);
+            repository.insertBanknotes(atmId, banknoteTypeId, quantity);
+        }
+    }
+
+    @Override
+    public void updateBanknotes(Long atmId, Long banknoteTypeId, Integer quantity) {
+        try (SqlSession session = MybatisSessionHolder.getSqlSessionFactory().openSession(true)) {
+            ATMRepository repository = session.getMapper(ATMRepository.class);
+            repository.updateBanknotes(atmId, banknoteTypeId, quantity);
+        }
+    }
 }

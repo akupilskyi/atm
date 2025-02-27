@@ -37,7 +37,6 @@
     <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO atms (location, status)
         VALUES (#{location}, #{status})
-        <!-- TODO: banknotes -->
     </insert>
 
     <select id="getAll" resultMap="ATMResultMap">
@@ -61,6 +60,17 @@
         WHERE id = #{atmId}
     </update>
 
+    <insert id="insertBanknotes">
+        INSERT INTO atms_have_banknote_types (atm_id, banknote_type_id, quantity)
+        VALUES (#{atmId}, #{banknoteTypeId}, #{quantity})
+    </insert>
+
+    <update id="updateBanknotes">
+        UPDATE atms_have_banknote_types
+        SET quantity = #{quantity}
+        WHERE atm_id = #{atmId} AND banknote_type_id = #{banknoteTypeId}
+    </update>
+
     <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
 
     <resultMap id="ATMResultMap" type="com.solvd.atm.domain.ATMElements.ATM" autoMapping="false">
@@ -70,7 +80,7 @@
         <collection property="transactions"
                     ofType="com.solvd.atm.domain.AccountResources.Transaction"
                     resultMap="com.solvd.atm.persistence.TransactionRepository.TransactionResultMap"/>
-        <!-- TODO: banknotes-->
+        <!-- TODO: banknotes hashmap -->
     </resultMap>
 
 </mapper>

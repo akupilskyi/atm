@@ -16,7 +16,7 @@ public interface ATMRepository {
 
     void updateStatus(@Param("atmId") Long atmId, @Param("newStatus") Status newStatus);
 
-    // TODO: createBanknotes
+    void insertBanknotes(@Param("atmId") Long atmId, @Param("banknoteTypeId") Long banknoteTypeId, @Param("quantity") Integer quantity);
 
-    // TODO: updateBanknotes
+    void updateBanknotes(@Param("atmId") Long atmId, @Param("banknoteTypeId") Long banknoteTypeId, @Param("quantity") Integer quantity);
 }
