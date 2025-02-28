@@ -86,6 +86,7 @@
 
     <resultMap id="IndividualBanknoteResultMap" type="com.solvd.atm.domain.ATMElements.IndividualBanknote" autoMapping="false">
         <id property="series" column="individual_banknote_series"/>
+        <id property="banknoteType.id" column="banknote_type_id"/>
         <association property="banknoteType"
                      resultMap="com.solvd.atm.persistence.BanknoteTypeRepository.BanknoteTypeResultMap"/>
     </resultMap>
