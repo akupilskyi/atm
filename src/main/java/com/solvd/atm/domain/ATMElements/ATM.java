@@ -3,14 +3,13 @@ package com.solvd.atm.domain.ATMElements;
 import com.solvd.atm.domain.AccountResources.Transaction;
 
 import java.util.List;
-import java.util.Map;
 
 public class ATM {
 
     private Long id;
     private String location;
     private Status status;
-    private Map<BanknoteType, Long> banknotes;
+    private List<IndividualBanknote> banknotes;
     List<Transaction> transactions;
 
     public Long getId() {
@@ -37,11 +36,11 @@ public class ATM {
         this.status = status;
     }
 
-    public Map<BanknoteType, Long> getBanknotes() {
+    public List<IndividualBanknote> getBanknotes() {
         return banknotes;
     }
 
-    public void setBanknotes(Map<BanknoteType, Long> banknotes) {
+    public void setBanknotes(List<IndividualBanknote> banknotes) {
         this.banknotes = banknotes;
     }
 

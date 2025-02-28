@@ -11,9 +11,7 @@
         <!-- status -->
         atms.status AS atm_status,
         <!-- banknotes -->
-        ahbt.atm_id AS banknotes_atm_id,
-        ahbt.banknote_type_id AS banknotes_banknote_type_id,
-        ahbt.quantity AS banknotes_quantity,
+        number_series.series AS individual_banknote_series,
         <include refid="com.solvd.atm.persistence.BanknoteTypeRepository.selectWhat"/>,
         <!-- transactions -->
         <include refid="com.solvd.atm.persistence.TransactionRepository.selectWhat"/>
@@ -28,8 +26,19 @@
         LEFT JOIN atms_have_banknote_types ahbt ON ahbt.atm_id = atms.id
         LEFT JOIN banknote_types ON banknote_types.id = ahbt.banknote_type_id
         <include refid="com.solvd.atm.persistence.BanknoteTypeRepository.joinNecessary"/>
+        LEFT JOIN number_series ON number_series.series <![CDATA[ <= ]]> ahbt.quantity
         LEFT JOIN transactions ON transactions.atm_id = atms.id
         <include refid="com.solvd.atm.persistence.TransactionRepository.joinNecessary"/>
+    </sql>
+
+    <sql id="withRecursive">
+        WITH RECURSIVE number_series AS (
+            SELECT 1 AS series
+                UNION ALL
+            SELECT series + 1
+            FROM number_series
+            WHERE series <![CDATA[ < ]]> (SELECT MAX(quantity) FROM atms_have_banknote_types)
+        )
     </sql>
 
     <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -40,6 +49,7 @@
     </insert>
 
     <select id="getAll" resultMap="ATMResultMap">
+        <include refid="withRecursive"/>
         SELECT
         <include refid="selectWhat"/>
         FROM
@@ -47,6 +57,7 @@
     </select>
 
     <select id="getById" resultMap="ATMResultMap">
+        <include refid="withRecursive"/>
         SELECT
         <include refid="selectWhat"/>
         FROM
@@ -73,20 +84,20 @@
 
     <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
 
+    <resultMap id="IndividualBanknoteResultMap" type="com.solvd.atm.domain.ATMElements.IndividualBanknote" autoMapping="false">
+        <id property="series" column="individual_banknote_series"/>
+        <association property="banknoteType"
+                     resultMap="com.solvd.atm.persistence.BanknoteTypeRepository.BanknoteTypeResultMap"/>
+    </resultMap>
+
     <resultMap id="ATMResultMap" type="com.solvd.atm.domain.ATMElements.ATM" autoMapping="false">
         <id property="id" column="atm_id"/>
         <result property="location" column="atm_location"/>
         <result property="status" column="atm_status" javaType="com.solvd.atm.domain.ATMElements.Status"
                 typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
-        <collection property="banknotes" javaType="java.util.HashMap">
-            <result property="value" column="quantity" javaType="java.lang.Long"/>
-            <association property="key" javaType="com.solvd.atm.domain.ATMElements.BanknoteType">
-                <id property="id" column="banknote_type_id"/>
-                <result property="denomination" column="denomination"/>
-                <association property="currency" javaType="com.solvd.atm.domain.ATMElements.Currency"
-                             resultMap="com.solvd.atm.persistence.CurrencyRepository.CurrencyResultMap"/>
-            </association>
-        </collection>
+        <collection property="banknotes"
+                    ofType="com.solvd.atm.domain.ATMElements.IndividualBanknote"
+                    resultMap="IndividualBanknoteResultMap"/>
         <collection property="transactions"
                     ofType="com.solvd.atm.domain.AccountResources.Transaction"
                     resultMap="com.solvd.atm.persistence.TransactionRepository.TransactionResultMap"/>
