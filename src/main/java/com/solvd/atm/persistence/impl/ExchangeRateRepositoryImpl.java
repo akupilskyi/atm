@@ -32,4 +32,12 @@ public class ExchangeRateRepositoryImpl implements ExchangeRateRepository {
             repository.create(exchangeRate);
         }
     }
+
+    @Override
+    public ExchangeRate getByFromCurrencyAndToCurrency(String fromCurrency, String toCurrency) {
+        try (SqlSession session = MybatisSessionHolder.getSqlSessionFactory().openSession(true)) {
+            ExchangeRateRepository repository = session.getMapper(ExchangeRateRepository.class);
+            return repository.getByFromCurrencyAndToCurrency(fromCurrency, toCurrency);
+        }
+    }
 }

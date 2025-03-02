@@ -10,7 +10,7 @@ public class ATM {
     private String location;
     private Status status;
     private List<IndividualBanknote> banknotes;
-    List<Transaction> transactions;
+    private List<Transaction> transactions;
 
     public Long getId() {
         return id;

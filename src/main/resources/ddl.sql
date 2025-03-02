@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `atmdb`.`transactions` (
   `amount` DECIMAL(15,2) NULL,
   `timestamp` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   `atm_id` INT UNSIGNED NOT NULL,
-  `currency_rate_id` INT UNSIGNED NOT NULL,
+  `currency_rate_id` INT UNSIGNED,
   PRIMARY KEY (`id`),
   INDEX `fk_transactions_cards1_idx` (`card_id` ASC) VISIBLE,
   INDEX `fk_transactions_atm1_idx` (`atm_id` ASC) VISIBLE,
@@ -85,9 +85,12 @@ CREATE TABLE IF NOT EXISTS `atmdb`.`transactions` (
 
 CREATE TABLE IF NOT EXISTS `atmdb`.`banknote_types` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `currency_code` VARCHAR(45) NOT NULL,
+  `currency` VARCHAR(3) NOT NULL,
   `denomination` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+    CONSTRAINT banknote_types_fk_currency_iso_code FOREIGN KEY (currency) REFERENCES currencies (iso_code)
+    ON DELETE NO ACTION)
+
 ;
 
 CREATE TABLE IF NOT EXISTS `atmdb`.`atms_have_banknote_types` (

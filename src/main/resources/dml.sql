@@ -44,7 +44,7 @@ INSERT INTO `atmdb`.`currency_rates` (`from_currency`, `to_currency`, `rate`) VA
 
 INSERT INTO `atmdb`.`atms` (`location`, `status`) VALUES
 ('Berlin, Germany', 'active'),
-('New York, USA', 'active'),
+('New York, USA', 'out_of_service'),
 ('Warsaw, Poland', 'active'),
 ('Paris, France', 'active'),
 ('London, UK', 'active');
@@ -61,7 +61,7 @@ INSERT INTO `atmdb`.`transactions` (`card_id`, `transaction_type`, `amount`, `at
 (1, 'deposit', 900.00, 4, 3),
 (1, 'withdrawal', 150.00, 5, 4);
 
-INSERT INTO `atmdb`.`banknote_types` (`currency_code`, `denomination`) VALUES
+INSERT INTO `atmdb`.`banknote_types` (`currency`, `denomination`) VALUES
 ('EUR', 5),
 ('EUR', 10),
 ('EUR', 20),

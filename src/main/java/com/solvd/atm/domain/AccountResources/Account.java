@@ -4,6 +4,8 @@ import com.solvd.atm.domain.ATMElements.Currency;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Account {
 
@@ -12,6 +14,7 @@ public class Account {
     private Currency currency;
     private boolean locked; // default value is false
     private List<Card> cards;
+    private final Lock lock = new ReentrantLock();
 
     public Long getId() {
         return id;
@@ -51,5 +54,13 @@ public class Account {
 
     public void setCards(List<Card> cards) {
         this.cards = cards;
+    }
+
+    public void lockAccount() {
+        lock.lock();
+    }
+
+    public void unlockAccount() {
+        lock.unlock();
     }
 }
