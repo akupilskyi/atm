@@ -14,6 +14,7 @@ import com.solvd.atm.view.ATMView;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Timestamp;
 import java.util.*;
 
 public class ATMController {
@@ -265,6 +266,7 @@ public class ATMController {
             Transaction transaction = new Transaction();
             transaction.setAmount(amountInAccountCurrency);
             transaction.setTransactionType(TransactionType.withdrawal);
+            transaction.setTimestamp(new Timestamp(System.currentTimeMillis()));
             transactionService.create(transaction, card, selectedATM, atmToCardRate);
 
             view.displayMessage("Withdrawal successful. Please take your cash.");
