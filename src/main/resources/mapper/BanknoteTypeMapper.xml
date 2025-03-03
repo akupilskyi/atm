@@ -7,7 +7,7 @@
         <!-- id -->
         banknote_types.id AS banknote_type_id,
         <!-- currency -->
-        banknote_types.currency_code AS banknote_type_currency_code,
+        banknote_types.currency AS banknote_type_currency,
             banknote_currencies.iso_code AS banknote_currency_iso_code,
             banknote_currencies.name AS banknote_currency_name,
         <!-- denomination -->
@@ -20,13 +20,13 @@
     </sql>
 
     <sql id="joinNecessary">
-        LEFT JOIN currencies banknote_currencies ON banknote_currencies.iso_code = banknote_types.currency_code
+        LEFT JOIN currencies banknote_currencies ON banknote_currencies.iso_code = banknote_types.currency
     </sql>
 
     <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
 
     <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
-        INSERT INTO banknote_types (currency_code, denomination)
+        INSERT INTO banknote_types (currency, denomination)
         VALUES (#{currency.isoCode}, #{denomination})
     </insert>
 

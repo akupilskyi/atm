@@ -49,4 +49,12 @@ public class AccountRepositoryImpl implements AccountRepository {
             repository.updateLocked(accountId, booleanValue);
         }
     }
+
+    @Override
+    public Account getAccountByCardNumber(String cardNumber) {
+        try (SqlSession session = MybatisSessionHolder.getSqlSessionFactory().openSession(true)) {
+            AccountRepository repository = session.getMapper(AccountRepository.class);
+            return repository.getAccountByCardNumber(cardNumber);
+        }
+    }
 }

@@ -17,4 +17,6 @@ public interface AccountRepository {
     void updateBalance(@Param("accountId") Long accountId, @Param("newBalance") BigDecimal newBalance);
 
     void updateLocked(@Param("accountId") Long accountId, @Param("booleanValue") boolean booleanValue);
+
+    Account getAccountByCardNumber(@Param("cardNumber") String cardNumber);
 }

@@ -51,6 +51,14 @@
         WHERE accounts.id = #{id}
     </select>
 
+    <select id="getAccountByCardNumber" resultMap="AccountResultMap">
+        SELECT
+        <include refid="selectWhat"/>
+        FROM
+        <include refid="fromWhere"/>
+        WHERE cards.number = #{cardNumber}
+    </select>
+
     <update id="updateBalance">
         UPDATE accounts
         SET balance = #{newBalance}

@@ -50,6 +50,14 @@
         WHERE currency_rates.id = #{id}
     </select>
 
+    <select id="getByFromCurrencyAndToCurrency" resultMap="ExchangeRateResultMap">
+        SELECT
+        <include refid="selectWhat"/>
+        FROM
+        <include refid="fromWhere"/>
+        WHERE currency_rates.from_currency = #{fromCurrency} AND currency_rates.to_currency = #{toCurrency}
+    </select>
+
     <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
 
     <resultMap id="ExchangeRateResultMap" type="com.solvd.atm.domain.ATMElements.ExchangeRate" autoMapping="false">

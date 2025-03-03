@@ -12,4 +12,6 @@ public interface ExchangeRateRepository {
     ExchangeRate getById(@Param("id") Long id);
 
     void create(ExchangeRate exchangeRate);
+
+    ExchangeRate getByFromCurrencyAndToCurrency(@Param("fromCurrency") String fromCurrency, @Param("toCurrency") String toCurrency);
 }

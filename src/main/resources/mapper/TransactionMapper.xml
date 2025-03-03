@@ -31,7 +31,7 @@
 
     <insert id="create" keyColumn="transactions.id" keyProperty="transaction.id" useGeneratedKeys="true">
         INSERT INTO transactions (card_id, transaction_type, amount, timestamp, atm_id, currency_rate_id)
-        VALUES (#{card.id}, #{transaction.transactionType}, #{transaction.amount}, #{transaction.timestamp}, #{atm.id}, #{transaction.exchangeRate.id})
+        VALUES (#{card.id}, #{transaction.transactionType}, #{transaction.amount}, #{transaction.timestamp}, #{atm.id}, #{exchangeRate.id})
     </insert>
 
     <select id="getAll" resultMap="TransactionResultMap">
