@@ -130,7 +130,8 @@ public class ATMController {
                 view.displayMessage("Exchange rate not available for the selected currencies.");
                 return;
             }
-            amountInCardCurrency = amount.multiply(atmToCardRate.getRate());
+            amountInCardCurrency = amount.multiply(atmToCardRate.getRate())
+                                         .setScale(2, RoundingMode.HALF_UP);
         } else {
             atmToCardRate = new ExchangeRate();
             atmToCardRate.setRate(BigDecimal.ONE);
@@ -145,7 +146,8 @@ public class ATMController {
                 view.displayMessage("Exchange rate not available for the selected currencies.");
                 return;
             }
-            amountInAccountCurrency = amountInCardCurrency.multiply(cardToAccountRate.getRate());
+            amountInAccountCurrency = amountInCardCurrency.multiply(cardToAccountRate.getRate())
+                                                          .setScale(2, RoundingMode.HALF_UP);
         }
 
         // Check if the account has sufficient funds
